@@ -13,13 +13,14 @@ namespace Fighting
 {
     public partial class Play_form : Form
     {
-        public static bool roundIsOver;
-        public static string winnerName;
+        private int lastAttacker;
+        private bool roundIsOver;
+        private string winnerName;
         public static Entity player1;
         public static Entity player2;
-        public static Bitmap hero1;
-        public static Bitmap hero2;
-        public static Image map;
+        private Bitmap hero1;
+        private Bitmap hero2;
+
         public Play_form(Bitmap player1Skin, Bitmap player2Skin)
         {
             InitializeComponent();
@@ -29,7 +30,7 @@ namespace Fighting
             SetSkins(player1Skin, player2Skin);
 
             roundIsOver = false;
-            timer1.Interval = 100; //30:100
+            timer1.Interval = 30;
             timer1.Tick += new EventHandler(Update);
             timer1.Start();
 
@@ -40,30 +41,28 @@ namespace Fighting
             Invalidate();
         }
 
-        public void SetSkins(Bitmap player1Skin, Bitmap player2Skin)
+        private void SetSkins(Bitmap player1Skin, Bitmap player2Skin)
         {
             hero1 = player1Skin;
             hero2 = player2Skin;
         }
 
-        public void CreatePlayers()
+        private void CreatePlayers()
         {
             player1 = new Entity
                 (310, 365, 1,
-                41, 13, 30,
                 hero1,
                 player1_hurtBox,
                 player1_hitBox);
 
             player2 = new Entity
-                (767, 396, 2,
-                41, 13, 30,
+                (767, 365, 2,
                 hero2,
                 player2_hurtBox,
                 player2_hitBox);
         }
 
-        public void OnPress(object sender, KeyEventArgs e)
+        private void OnPress(object sender, KeyEventArgs e)
         {
             if(!roundIsOver)
             {
@@ -78,9 +77,6 @@ namespace Fighting
                             break;
                         case Keys.F:
                             SetMove(player1, 10, 3);
-                            break;
-                        case Keys.Escape:
-                            openForm1();
                             break;
                     }
 
@@ -102,12 +98,12 @@ namespace Fighting
             switch(e.KeyCode)
             {
                 case Keys.Escape:
-                    openForm1();
+                    Application.Exit();
                     break;
             }
         }
 
-        public void Update(object sender, EventArgs e)
+        private void Update(object sender, EventArgs e)
         {
             if(!roundIsOver)
             {
@@ -118,6 +114,7 @@ namespace Fighting
 
                 if (player2.isMoving)
                     MakeMove(player2);
+
                 Invalidate();
                 return;
             }
@@ -145,21 +142,25 @@ namespace Fighting
             }
         }
 
-        public void SetMove(Entity player, int dirX, int SetAnimation)
+        private void SetMove(Entity player, int dirX, int SetAnimation)
         {
             if (SetAnimation == 3)
+            {
                 player.isAttacking = true;
+                lastAttacker = player.side;
+            }
+                
             player.isMoving = true;
             player.dirX = dirX;
-            player.SetAnimation(SetAnimation);
+            View.SetAnimation(player, SetAnimation);
         }
 
-        public bool InBorders(Entity player)
+        private bool InBorders(Entity player)
         {
             switch(player.side)
             {
                 case 1:
-                    if (player1.posX + player1.dirX > 0 && player1.hurtBox.Right + player1.dirX + 50 < player2.hurtBox.Left)
+                    if (player1.PosX + player1.dirX > 0 && player1.hurtBox.Right + player1.dirX + 50 < player2.hurtBox.Left)
                         return true;
                     return false;
                 case 2:
@@ -170,37 +171,37 @@ namespace Fighting
             return false;
         }
 
-        public void MakeMove(Entity player)
+        private void MakeMove(Entity player)
         {
             if (InBorders(player))
             {
-                player.posX += player.dirX;
+                player.PosX = player.dirX;
                 player.hurtBox.Left += player.dirX;
                 player.hitBox.Left += player.dirX;
             }
         }
 
-        public void WinnerStatus()
+        private void WinnerStatus()
         {
-            if (player1.isAttacking && player1_hitBox.Right >= player2_hurtBox.Left)
+            if (player1.isAttacking && lastAttacker == 1 && player1_hitBox.Right >= player2_hurtBox.Left)
             {
                 RoundOver("Player1 won");
             }
 
 
-            if (player2.isAttacking && player2_hitBox.Left <= player1_hurtBox.Right)
+            if (player2.isAttacking && lastAttacker == 2 && player2_hitBox.Left <= player1_hurtBox.Right)
             {
                 RoundOver("Player2 won");
             }
         }
 
-        public void RoundOver(string winner)
+        private void RoundOver(string winner)
         {
             roundIsOver = true;
             winnerName = winner;
         }
 
-        public void openForm1()
+        private void openForm1()
         {
             this.Hide();
             Main_menu_form formToSwitch = new Main_menu_form();

@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Fighting
 {
     partial class Selection_form
@@ -74,7 +76,6 @@ namespace Fighting
             this.btnHome.Size = new System.Drawing.Size(71, 71);
             this.btnHome.TabIndex = 5;
             this.btnHome.UseVisualStyleBackColor = true;
-            this.btnHome.Click += new System.EventHandler(this.btnHome_Click_1);
             // 
             // Left_Select_Blue
             // 
@@ -304,7 +305,6 @@ namespace Fighting
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Selection";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.Selection_form_Load);
             ((System.ComponentModel.ISupportInitialize)(this.Skin_choose)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Red_arrow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Blue_arrow)).EndInit();
@@ -316,6 +316,11 @@ namespace Fighting
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
+        }
+
+        private void btnHome_Click_1(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

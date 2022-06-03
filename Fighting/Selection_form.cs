@@ -10,14 +10,14 @@ namespace Fighting
 {
     public partial class Selection_form : Form
     {
-        public static string player1Skin = "Left_Blue_Sprites";
-        public static string player2Skin = "Right_Red_Sprites";
+        private string player1Skin = "Left_Blue_Sprites";
+        private string player2Skin = "Right_Red_Sprites";
         public Selection_form()
         {
             InitializeComponent();
             KeyPreview = true;
 
-            timer1.Interval = 50;
+            timer1.Interval = 100;
             timer1.Tick += new EventHandler(Update);
             timer1.Start();
 
@@ -26,7 +26,7 @@ namespace Fighting
         }
 
 
-        public void OnPress(object sender, KeyEventArgs e)
+        private void OnPress(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
@@ -36,12 +36,12 @@ namespace Fighting
             }
         }
 
-        public void Update(object sender, EventArgs e)
+        private void Update(object sender, EventArgs e)
         {
             Invalidate();
         }
 
-        public void openForm1()
+        private void openForm1()
         {
             this.Hide();
             Main_menu_form formToSwitch = new Main_menu_form();
@@ -50,11 +50,6 @@ namespace Fighting
         }
 
         private void btnHome_Click(object sender, EventArgs e)
-        {
-            openForm1();
-        }
-
-        private void btnHome_Click_1(object sender, EventArgs e)
         {
             openForm1();
         }
@@ -109,7 +104,7 @@ namespace Fighting
             this.Close();
         }
 
-        public Bitmap SelectSkin(string skinName)
+        private Bitmap SelectSkin(string skinName)
         {
             switch (skinName)
             {
@@ -131,11 +126,6 @@ namespace Fighting
                     return new Bitmap(Resource1.Right_Yellow_Sprites);
             }
             return new Bitmap(Resource1.Left_Yellow_Sprites);
-        }
-
-        private void Selection_form_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

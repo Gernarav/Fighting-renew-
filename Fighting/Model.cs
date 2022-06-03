@@ -10,65 +10,68 @@ namespace Fighting
 {
     public class Entity
     {
-        public int posX;
-        public int posY;
-        public int side;
-
+        private int posX;
+        public int PosX
+        {
+            get { return posX; }
+            set 
+            {
+                    posX += dirX; 
+            }
+        }
         public int dirX;
+        public readonly int posY;
+        public readonly int side;
+
         public bool isMoving;
         public bool isAttacking;
 
-        public int idleFrames;
-        public int walkFrames;
-        public int attackFrames;
+        private int currentAnimation;
+        public int CurrentAnimation
+        {
+            get { return currentAnimation; }
+            set
+            {
+                if (value >= 0 && value <= 3)
+                    currentAnimation = value;
+            }
+        }
 
-        public int currentAnimation;
-        public int currentFrame;
-        public int currentLimit;
+        private int currentFrame;
+        public int CurrentFrame
+        {
+            get { return currentFrame; }
+            set
+            {
+                if (value >= 0 && value <= 41)
+                    currentFrame = value;
+            }
+        }
+
+        private int currentLimit;
+        public int CurrentLimit
+        {
+            get { return currentLimit; }
+            set
+                {
+                if (value >= 0 && value <= 41)
+                    currentLimit = value;
+                }
+        }
 
         public Image sprites;
         public PictureBox hurtBox;
         public PictureBox hitBox;
 
-        public Entity(int posX, int posY, int side, int idleFrames, int walkFrames, int attackFrames, Image sprites, PictureBox hurtBox, PictureBox hitBox)
+        public Entity(int posX, int posY, int side, Image sprites, PictureBox hurtBox, PictureBox hitBox)
         {
             this.posX = posX;
+            this.posY = posY;
             this.side = side;
-            this.idleFrames = idleFrames;
-            this.walkFrames = walkFrames;
-            this.attackFrames = attackFrames;
             this.sprites = sprites;
             this.hurtBox = hurtBox;
             this.hitBox = hitBox;
-            currentLimit = idleFrames;
+            currentLimit = 41;
         }
-
-        public void SetAnimation(int currentAnimation)
-        {
-            this.currentAnimation = currentAnimation;
-
-            switch(currentAnimation)
-            {
-                case 0:
-                    currentLimit = idleFrames;
-                    break;
-                case 1:
-                    currentLimit = walkFrames;
-                    break;
-                case 2:
-                    currentLimit = walkFrames;
-                    break;
-                case 3:
-                    currentLimit = attackFrames;
-                    break;
-            }
-        }
-    }
-
-    public static class Hero
-    {
-        public static int idleFrames = 41;
-        public static int walkFrames = 13;
-        public static int attackFrames = 30;
     }
 }

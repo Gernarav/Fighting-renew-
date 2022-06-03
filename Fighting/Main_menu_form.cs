@@ -17,7 +17,7 @@ namespace Fighting
             Invalidate();
         }
 
-        public void OnPress(object sender, KeyEventArgs e)
+        private void OnPress(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
